@@ -1,0 +1,10 @@
+--- a/drivers/spi/spidev.c	2018-10-31 21:15:37.493285559 +0100
++++ a/drivers/spi/spidev.c	2018-10-29 20:51:53.118098955 +0100
+@@ -669,6 +669,7 @@
+ 	{ .compatible = "lineartechnology,ltc2488" },
+ 	{ .compatible = "ge,achc" },
+ 	{ .compatible = "semtech,sx1301" },
++	{ .compatible = "linux,spidev" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);

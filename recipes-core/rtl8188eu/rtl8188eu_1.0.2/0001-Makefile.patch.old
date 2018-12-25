@@ -1,0 +1,35 @@
+From 00522071b4db787eb9b7663758827bb017868025 Mon Sep 17 00:00:00 2001
+From: Thomas Federspiel <thomas@federspiel.se>
+Date: Sun, 18 Nov 2018 14:33:51 +0100
+Subject: [PATCH] Chanegd for yocto
+
+---
+ Makefile | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 9bbc2fd..39363a3 100755
+--- a/Makefile
++++ b/Makefile
+@@ -156,11 +156,13 @@ strip:
+ 	$(CROSS_COMPILE)strip 8188eu.ko --strip-unneeded
+ 
+ install:
+-	install -p -m 644 8188eu.ko  $(MODDESTDIR)
+-	@if [ -a /lib/modules/$(KVER)/kernel/drivers/staging/rtl8188eu/r8188eu.ko ] ; then modprobe -r r8188eu; fi;
+-	@echo "blacklist r8188eu" > /etc/modprobe.d/50-8188eu.conf
+-	cp rtl8188eufw.bin /lib/firmware/rtlwifi/.
+-	/sbin/depmod -a ${KVER}
++	install -d $(INSTALL_PREFIX)$(MODDESTDIR)
++	install -p -m 644 8188eu.ko  $(INSTALL_PREFIX)$(MODDESTDIR)
++#	install -p -m 644 8188eu.ko  $(MODDESTDIR)
++#	@if [ -a /lib/modules/$(KVER)/kernel/drivers/staging/rtl8188eu/r8188eu.ko ] ; then modprobe -r r8188eu; fi;
++#	@echo "blacklist r8188eu" > /etc/modprobe.d/50-8188eu.conf
++#	cp rtl8188eufw.bin /lib/firmware/rtlwifi/.
++#	/sbin/depmod -a ${KVER}
+ 
+ uninstall:
+ 	rm -f $(MODDESTDIR)/8188eu.ko
+-- 
+2.7.4
+

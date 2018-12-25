@@ -1,0 +1,7 @@
+configfs
+libcomposite
+u_ether
+usb_f_rndis
+g_ether
+uio_pruss
+spidev

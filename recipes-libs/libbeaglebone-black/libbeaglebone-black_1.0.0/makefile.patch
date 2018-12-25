@@ -1,0 +1,101 @@
+--- a/v3_0/makefile	2015-10-25 20:36:06.637005977 +0100
++++ a/v3_0/makefile	2015-10-25 09:32:56.305117951 +0100
+@@ -1,25 +1,77 @@
+-CXX=arm-linux-gnueabi-g++
++PREFIX ?= /usr
+ 
+-INCLUDES=-I/usr/arm-linux-gnueabi/include/c++/4.6.3
++CXX ?= $(ARCH)g++
++LD ?= $(ARCH)ld
++AR ?= $(ARCH)ar
++
++#INCLUDES=-I/usr/arm-linux-gnueabi/include/c++/4.6.3
+ 
+ CPPFLAGS=-D__GXX_EXPERIMENTAL_CXX0X__ -D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1 -D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2 -D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 -D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8
+ 
+-CXXFLAGS=-std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -pthread $(CPPFLAGS) $(INCLUDES)
++CXXFLAGS=-std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -pthread -fpic $(CPPFLAGS) $(INCLUDES)
+ 
+ LDFLAGS=-lpthread
+ 
+-LDLIBS=-L/usr/arm-linux-gnueabi/lib
++LDLIBFLAGS=-shared $(LDFLAGS)
++
++#LDLIBS=-L/usr/arm-linux-gnueabi/lib
+ 
+ RM=rm -f
+ 
+-SOURCES=./BlackADC/BlackADC.cpp ./BlackDirectory/BlackDirectory.cpp  ./BlackGPIO/BlackGPIO.cpp ./BlackI2C/BlackI2C.cpp ./BlackMutex/BlackMutex.cpp ./BlackPWM/BlackPWM.cpp ./BlackSPI/BlackSPI.cpp ./BlackThread/BlackThread.cpp ./BlackTime/BlackTime.cpp  ./BlackUART/BlackUART.cpp ./BlackCore.cpp ./examples.cpp
++SOURCES=./BlackADC/BlackADC.cpp ./BlackDirectory/BlackDirectory.cpp  ./BlackGPIO/BlackGPIO.cpp ./BlackI2C/BlackI2C.cpp ./BlackMutex/BlackMutex.cpp ./BlackPWM/BlackPWM.cpp ./BlackSPI/BlackSPI.cpp ./BlackThread/BlackThread.cpp ./BlackTime/BlackTime.cpp  ./BlackUART/BlackUART.cpp ./BlackCore.cpp 
++
++EXAMPLE_SOURCES= ./examples.cpp
+ 
+ OBJECTS=$(SOURCES:.cpp=.o)
++EXAMPLE_OBJECTS=$(EXAMPLE_SOURCES:.cpp=.o)
+ 
+ EXECUTABLE=BlackLib-executable
+ 
++LIB_SHARED_NAME=libbeaglebone-black.so
++LIB_SO_NAME=$(LIB_SHARED_NAME).1
++LIB_SO=$(LIB_SO_NAME).0
++
++LIB_STATIC_NAME=libbeaglebone-black.a
++LIB_A=$(LIB_STATIC_NAME)
++
++INSTALL_INCLUDE_DIR=${PREFIX}/include/beaglebone-blacklib
++
++all: $(SOURCES) $(EXAMPLE_SOURCES) $(EXECUTABLE) $(LIB_SO) $(LIB_A)
++
++lib: $(SOURCES) $(LIB_SO) $(LIB_A)
++
++$(EXECUTABLE): $(OBJECTS) $(EXAMPLE_OBJECTS) 
++	$(CXX) $(LDLIBS) $(OBJECTS) $(EXAMPLE_OBJECTS) $(LDFLAGS) -o $@
++
++$(LIB_SO): $(OBJECTS)
++	$(CXX) $(LDLIBS) $(LDLIBFLAGS) -Wl,-soname,$(LIB_SO_NAME) $(OBJECTS) -o $@ 
++
++$(LIB_A): $(OBJECTS)
++	$(AR) -cvq $@ $(OBJECTS)
+ 
+-all: $(SOURCES) $(EXECUTABLE)
+-    
+-$(EXECUTABLE): $(OBJECTS) 
+-	$(CXX) $(LDLIBS) $(OBJECTS) $(LDFLAGS) -o $@
++install-lib:
++	install -d  ${PREFIX}/lib
++	install -m 0755 ${LIB_SO} ${PREFIX}/lib
++	install -m 0755 ${LIB_A} ${PREFIX}/lib
++	install -d  ${INSTALL_INCLUDE_DIR}
++	install -m 0755 *.h ${INSTALL_INCLUDE_DIR}
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackUART
++	install -m 0755 BlackUART/*.h ${INSTALL_INCLUDE_DIR}/BlackUART
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackDirectory
++	install -m 0755 BlackDirectory/*.h ${INSTALL_INCLUDE_DIR}/BlackDirectory
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackI2C
++	install -m 0755 BlackI2C/*.h ${INSTALL_INCLUDE_DIR}/BlackI2C
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackGPIO
++	install -m 0755 BlackGPIO/*.h ${INSTALL_INCLUDE_DIR}/BlackGPIO
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackTime
++	install -m 0755 BlackTime/*.h ${INSTALL_INCLUDE_DIR}/BlackTime
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackPWM
++	install -m 0755 BlackPWM/*.h ${INSTALL_INCLUDE_DIR}/BlackPWM
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackMutex
++	install -m 0755 BlackMutex/*.h ${INSTALL_INCLUDE_DIR}/BlackMutex
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackSPI
++	install -m 0755 BlackSPI/*.h ${INSTALL_INCLUDE_DIR}/BlackSPI
++	install -d  ${INSTALL_INCLUDE_DIR}/BlackThread
++	install -m 0755 BlackThread/*.h ${INSTALL_INCLUDE_DIR}/BlackThread
++	ln -sf $(LIB_SO_NAME) ${PREFIX}/lib/$(LIB_SHARED_NAME) 
++	ln -sf $(LIB_SO) ${PREFIX}/lib/$(LIB_SO_NAME) 
+
+ 
+ .cpp.o:
+ 	$(CXX) $(CXXFLAGS) $< -o $@
+ 
+ clean:
+-	$(RM) $(OBJECTS)
++	$(RM) $(OBJECTS) $(EXECUTABLE) $(LIB_SO) $(LIB_A)
+ 
++.phony: install-lib
++.phony: clean
+\ No newline at end of file

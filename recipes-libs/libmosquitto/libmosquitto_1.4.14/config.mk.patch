@@ -1,0 +1,21 @@
+--- a/config.mk	2017-10-29 14:37:22.528355089 +0100
++++ a/config.mk	2017-10-29 14:40:55.688646951 +0100
+@@ -58,7 +58,8 @@
+ WITH_SYS_TREE:=yes
+ 
+ # Build with SRV lookup support.
+-WITH_SRV:=yes
++WITH_SRV:=no
++#WITH_SRV:=yes needs ares, github.com/c-ares
+ 
+ # Build using libuuid for clientid generation (Linux only - please report if
+ # supported on your platform).
+@@ -249,7 +250,7 @@
+ endif
+ 
+ INSTALL?=install
+-prefix=/usr/local
++prefix?=/usr/local
+ mandir=${prefix}/share/man
+ localedir=${prefix}/share/locale
+ STRIP?=strip

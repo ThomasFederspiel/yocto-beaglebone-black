@@ -1,0 +1,24 @@
+From d2d2fc678ed847b221fc7d636072b57ebeb66f02 Mon Sep 17 00:00:00 2001
+From: Thomas Federspiel <thomas@federspiel.se>
+Date: Tue, 25 Dec 2018 07:57:50 +0100
+Subject: [PATCH] spidev
+
+---
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 3c6dfad..f72e86f 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -696,6 +696,7 @@ static struct class *spidev_class;
+ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "rohm,dh2228fv" },
+ 	{ .compatible = "lineartechnology,ltc2488" },
++	{ .compatible = "linux,spidev" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+-- 
+2.7.4
+

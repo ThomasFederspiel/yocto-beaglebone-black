@@ -1,0 +1,27 @@
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+ssid="NETGEAR-5G"
+proto=RSN
+key_mgmt=WPA-PSK
+pairwise=CCMP TKIP
+group=CCMP TKIP
+#psk="1banana12monkies"
+psk=88d5707021f403348205229d6ceacdfa6f2d5f75ab1df0d7ad744dbc4b8ad5bb
+#scan_ssid=1
+}
+
+network={
+ssid="NETGEAR-2G"
+proto=RSN
+key_mgmt=WPA-PSK
+pairwise=CCMP TKIP
+group=CCMP TKIP
+#psk="8TreeDogs"
+psk=25b5a929fa02518e6594681783738aa6438eb24661551cee8f2b8c063726e7fe
+#scan_ssid=1
+}
+
+
+

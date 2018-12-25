@@ -1,0 +1,45 @@
+boot_fdt=try
+bootpart=0:2
+bootdir=/boot
+bootfile=zImage
+fdtfile=undefined
+console=ttyO0,115200n8
+partitions=uuid_disk=${uuid_gpt_disk};name=rootfs,start=2MiB,size=-,uuid=${uuid_gpt_rootfs}
+optargs=
+enable_uboot_overlays=1
+disable_uboot_overlay_video=1
+uboot_overlay_pru=/lib/firmware/AM335X-PRU-UIO-00A0.dtbo
+mmcdev=0
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=ext4 rootwait
+rootpath=/export/rootfs
+nfsopts=nolock
+static_ip=${ipaddr}:${serverip}:${gatewayip}:${netmask}:${hostname}::off
+ramroot=/dev/ram0 rw
+ramrootfstype=ext2
+mmcargs=setenv bootargs console=${console} ${optargs} root=${mmcroot} rootfstype=${mmcrootfstype}
+spiroot=/dev/mtdblock4 rw
+spirootfstype=jffs2
+spisrcaddr=0xe0000
+spiimgsize=0x362000
+spibusno=0
+spiargs=setenv bootargs console=${console} ${optargs} root=${spiroot} rootfstype=${spirootfstype}
+netargs=setenv bootargs console=${console} ${optargs} root=/dev/nfs nfsroot=${serverip}:${rootpath},${nfsopts} rw ip=dhcp
+bootenv=uEnv.txt
+loadbootscript=load mmc ${mmcdev} ${loadaddr} boot.scr
+bootscript=echo Running bootscript from mmc${mmcdev} ...; source ${loadaddr}
+loadbootenv=load mmc ${mmcdev} ${loadaddr} ${bootenv}
+importbootenv=echo Importing environment from mmc ...; env import -t -r $loadaddr $filesize
+ramargs=setenv bootargs console=${console} ${optargs} root=${ramroot} rootfstype=${ramrootfstype}
+loadramdisk=load mmc ${mmcdev} ${rdaddr} ramdisk.gz
+loadimage=load mmc ${bootpart} ${loadaddr} ${bootdir}/${bootfile}
+loadfdt=load mmc ${bootpart} ${fdtaddr} ${bootdir}/${fdtfile}
+mmcloados=run mmcargs; if test ${boot_fdt} = yes || test ${boot_fdt} = try; then if run loadfdt; then bootz ${loadaddr} - ${fdtaddr}; else if test ${boot_fdt} = try; then bootz; else echo WARN: Cannot load the DT; fi; fi; else bootz; fi;
+mmcboot=mmc dev ${mmcdev}; if mmc rescan; then echo SD/MMC found on device ${mmcdev};if run loadbootscript; then run bootscript;else if run loadbootenv; then echo Loaded environment from ${bootenv};run importbootenv;fi;if test -n $uenvcmd; then echo Running uenvcmd ...;run uenvcmd;fi;if run loadimage; then run mmcloados;fi;fi ;fi;0spiboot=echo Booting from spi ...; run spiargs; sf probe ${spibusno}:0; sf read ${loadaddr} ${spisrcaddr} ${spiimgsize}; bootz ${loadaddr}0netboot=echo Booting from network ...; setenv autoload no; dhcp; tftp ${loadaddr} ${bootfile}; tftp ${fdtaddr} ${fdtfile}; run netargs; bootz ${loadaddr} - ${fdtaddr}
+ramboot=echo Booting from ramdisk ...; run ramargs; bootz ${loadaddr} ${rdaddr} ${fdtaddr}
+findfdt=if test $board_name = A335BONE; then setenv fdtfile am335x-bone.dtb; fi; if test $board_name = A335BNLT; then setenv fdtfile am335x-boneblack.dtb; fi; if test $board_name = A33515BB; then setenv fdtfile am335x-evm.dtb; fi; if test $board_name = A335X_SK; then setenv fdtfile am335x-evmsk.dtb; fi; if test $fdtfile = undefined; then echo WARNING: Could not determine device tree to use; fi; 
+bootcmd=run findfdt; run mmcboot;setenv mmcdev 1; setenv bootpart 1:2; run mmcboot;run nandboot;
+uenvcmd=run findfdt; run loadfdt; run loadimage; run mmcloados
+
+
+

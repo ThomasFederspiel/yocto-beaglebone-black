@@ -1,0 +1,11 @@
+--- a/lib/Makefile-lib	2017-10-29 09:16:16.117404078 +0100
++++ a/lib/Makefile	2017-10-29 07:31:05.277417121 +0100
+@@ -26,7 +26,7 @@
+ install : all
+ 	$(INSTALL) -d ${DESTDIR}$(prefix)/lib${LIB_SUFFIX}/
+ 	$(INSTALL) -s --strip-program=${CROSS_COMPILE}${STRIP} libmosquitto.so.${SOVERSION} ${DESTDIR}${prefix}/lib${LIB_SUFFIX}/libmosquitto.so.${SOVERSION}
++#	ln -sf libmosquitto.so.${SOVERSION} ${DESTDIR}${prefix}/lib${LIB_SUFFIX}/libmosquitto.so
+-	ln -sf libmosquitto.so.${SOVERSION} ${DESTDIR}${prefix}/lib${LIB_SUFFIX}/libmosquitto.so
+ 	$(INSTALL) -d ${DESTDIR}${prefix}/include/
+ 	$(INSTALL) mosquitto.h ${DESTDIR}${prefix}/include/mosquitto.h
+ 	$(MAKE) -C cpp install

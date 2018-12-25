@@ -1,0 +1,25 @@
+--- a/pru_sw/app_loader/interface/Makefile	2015-12-21 11:19:55.074291412 +0100
++++ a/pru_sw/app_loader/interface/Makefile	2015-12-21 11:21:07.797565740 +0100
+@@ -3,8 +3,8 @@
+ CROSS_COMPILE?=arm-arago-linux-gnueabi-
+ PREFIX?=/usr/local
+ 
+-CC = $(CROSS_COMPILE)gcc
+-AR = $(CROSS_COMPILE)ar
++CC ?= $(CROSS_COMPILE)gcc
++AR ?= $(CROSS_COMPILE)ar
+ 
+ INCLUDEDIR = ../include
+ LIBDIR	   = ../lib
+@@ -41,9 +41,9 @@
+ 
+ install: release
+ 	install -m 0755 -d $(DESTDIR)$(PREFIX)/lib
+-	install -m 0755 -d $(DESTDIR)$(PREFIX)/include
++	install -m 0755 -d $(DESTDIR)$(PREFIX)/include/prussdrv
+ 	install -m 0644 $(LIBDIR)/* $(DESTDIR)$(PREFIX)/lib
+-	install -m 0644 $(PUBLIC_HDRS) $(DESTDIR)$(PREFIX)/include
++	install -m 0644 $(PUBLIC_HDRS) $(DESTDIR)$(PREFIX)/include/prussdrv
+ 
+ release:	$(RELTARGET)
+ 

@@ -1,0 +1,10 @@
+--- a/pru_sw/app_loader/include/prussdrv.h	2017-04-27 08:10:10.283873157 +0200
++++ a/pru_sw/app_loader/include/prussdrv.h	2017-10-29 21:01:51.456585338 +0100
+@@ -111,6 +111,7 @@
+     int prussdrv_init(void);
+ 
+     int prussdrv_open(unsigned int host_interrupt);
++    int prussdrv_close(unsigned int host_interrupt);
+ 
+     /** Return version of PRU.  This must be called after prussdrv_open. */
+     int prussdrv_version();

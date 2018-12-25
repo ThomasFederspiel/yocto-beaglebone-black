@@ -1,0 +1,35 @@
+From ffd5052058df1cf48b95d238ba6c1ac3ef51870e Mon Sep 17 00:00:00 2001
+From: Thomas Federspiel <thomas@federspiel.se>
+Date: Fri, 7 Dec 2018 09:53:12 +0100
+Subject: [PATCH] Change
+
+---
+ Makefile | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 395dbae..266075c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -2,6 +2,7 @@
+ DTC ?= dtc
+ CPP ?= cpp
+ KERNEL_VERSION ?= $(shell uname -r)
++DESTDIR ?=
+ 
+ MAKEFLAGS += -rR --no-print-directory
+ 
+@@ -153,8 +154,8 @@ all_arch: $(ARCH_DTB)
+ 
+ PHONY += install_arch
+ install_arch: $(ARCH_DTB)
+-	mkdir -p /boot/dtbs/$(KERNEL_VERSION)/
+-	cp -v $(obj)/*.dtb /boot/dtbs/$(KERNEL_VERSION)/
++	mkdir -p $(DESTDIR)/boot/dtbs/$(KERNEL_VERSION)/
++	cp -v $(obj)/*.dtb $(DESTDIR)/boot/dtbs/$(KERNEL_VERSION)/
+ 
+ RCS_FIND_IGNORE := \( -name SCCS -o -name BitKeeper -o -name .svn -o -name CVS \
+                    -o -name .pc -o -name .hg -o -name .git \) -prune -o
+-- 
+2.7.4
+

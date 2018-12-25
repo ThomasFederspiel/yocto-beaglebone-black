@@ -1,0 +1,60 @@
+From 40f5a7755e2ca626f0484bdd6ada0d1007bfeacd Mon Sep 17 00:00:00 2001
+From: Thomas Federspiel <thomas@federspiel.se>
+Date: Sun, 2 Dec 2018 08:01:45 +0100
+Subject: [PATCH] change
+
+---
+ Makefile | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 9bbc2fd..dc88080 100755
+--- a/Makefile
++++ b/Makefile
+@@ -99,9 +99,9 @@ endif
+ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ | sed -e s/ppc/powerpc/ | sed -e s/armv.l/arm/)
+ ARCH ?= $(SUBARCH)
+ CROSS_COMPILE ?=
+-KVER  := $(shell uname -r)
+-KSRC := /lib/modules/$(KVER)/build
+-MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
++KERNEL_VERSION  ?= $(shell uname -r)
++KERNEL_SRC ?= /lib/modules/$(KERNEL_VERSION)/build
++MODDESTDIR := /lib/modules/$(KERNEL_VERSION)/kernel/drivers/net/wireless/
+ INSTALL_PREFIX :=
+ 
+ ifneq ($(USER_MODULE_NAME),)
+@@ -150,21 +150,23 @@ export CONFIG_RTL8188EU = m
+ all: modules
+ 
+ modules:
+-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd)  modules
++	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL_SRC) M=$(shell pwd)  modules
+ 
+ strip:
+ 	$(CROSS_COMPILE)strip 8188eu.ko --strip-unneeded
+ 
+ install:
+-	install -p -m 644 8188eu.ko  $(MODDESTDIR)
+-	@if [ -a /lib/modules/$(KVER)/kernel/drivers/staging/rtl8188eu/r8188eu.ko ] ; then modprobe -r r8188eu; fi;
+-	@echo "blacklist r8188eu" > /etc/modprobe.d/50-8188eu.conf
+-	cp rtl8188eufw.bin /lib/firmware/rtlwifi/.
+-	/sbin/depmod -a ${KVER}
++	install -d $(INSTALL_PREFIX)$(MODDESTDIR)
++	install -p -m 644 8188eu.ko  $(INSTALL_PREFIX)$(MODDESTDIR)
++#	install -p -m 644 8188eu.ko  $(MODDESTDIR)
++#	@if [ -a /lib/modules/$(KERNEL_VERSION)/kernel/drivers/staging/rtl8188eu/r8188eu.ko ] ; then modprobe -r r8188eu; fi;
++#	@echo "blacklist r8188eu" > /etc/modprobe.d/50-8188eu.conf
++#	cp rtl8188eufw.bin /lib/firmware/rtlwifi/.
++#	/sbin/depmod -a ${KERNEL_VERSION}
+ 
+ uninstall:
+ 	rm -f $(MODDESTDIR)/8188eu.ko
+-	/sbin/depmod -a ${KVER}
++	/sbin/depmod -a ${KERNEL_VERSION}
+ 	@rm /etc/modprobe.d/50-8188eu.conf
+ 
+ config_r:
+-- 
+2.7.4
+

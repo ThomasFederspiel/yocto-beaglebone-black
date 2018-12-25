@@ -1,0 +1,41 @@
+--- git/Makefile	2017-05-11 16:53:14.959058187 +0200
++++ git/Makefile	2017-05-11 16:50:54.935932140 +0200
+@@ -99,7 +99,7 @@
+ CROSS_COMPILE ?=
+ KVER  := $(shell uname -r)
+ KSRC ?= /lib/modules/$(KVER)/build
+-MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless
++MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
+ INSTALL_PREFIX :=
+ 
+ ifneq ($(KERNELRELEASE),)
+@@ -154,18 +154,19 @@
+ 	$(CROSS_COMPILE)strip 8188eu.ko --strip-unneeded
+ 
+ install:
+-	install -p -m 644 8188eu.ko  $(MODDESTDIR)
+-	@if [ -a /lib/modules/$(KVER)/kernel/drivers/staging/rtl8188eu/r8188eu.ko ] ; then modprobe -r r8188eu; fi;
+-	@echo "blacklist r8188eu" > /etc/modprobe.d/50-8188eu.conf
+-	cp rtl8188eufw.bin /lib/firmware/.
+-	/sbin/depmod -a ${KVER}
+-	mkdir -p /lib/firmware/rtlwifi
+-	cp rtl8188eufw.bin /lib/firmware/rtlwifi/.
++	install -d $(INSTALL_PREFIX)$(MODDESTDIR)
++	install -p -m 644 8188eu.ko  $(INSTALL_PREFIX)$(MODDESTDIR)
++#	@if [ -a /lib/modules/$(KVER)/kernel/drivers/staging/rtl8188eu/r8188eu.ko ] ; then modprobe -r r8188eu; fi;
++#	@echo "blacklist r8188eu" > /etc/modprobe.d/50-8188eu.conf
++#	cp rtl8188eufw.bin /lib/firmware/.
++#	/sbin/depmod -a ${KVER}
++#	mkdir -p /lib/firmware/rtlwifi
++#	cp rtl8188eufw.bin /lib/firmware/rtlwifi/.
+ 
+ uninstall:
+-	rm -f $(MODDESTDIR)/8188eu.ko
+-	/sbin/depmod -a ${KVER}
+-	@rm /etc/modprobe.d/50-8188eu.conf
++	rm -f $(PREFIX_INSTALL)$(MODDESTDIR)/8188eu.ko
++#	/sbin/depmod -a ${KVER}
++#	@rm /etc/modprobe.d/50-8188eu.conf
+ 
+ config_r:
+ 	@echo "make config"

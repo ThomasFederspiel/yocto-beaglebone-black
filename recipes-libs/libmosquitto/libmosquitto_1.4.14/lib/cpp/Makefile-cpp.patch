@@ -1,0 +1,15 @@
+--- a/lib/cpp/Makefile-cpp	2017-10-29 09:19:39.665892807 +0100
++++ a/lib/cpp/Makefile	2017-10-29 07:31:05.277417121 +0100
+@@ -11,10 +11,10 @@
+ install : all
+ 	$(INSTALL) -d ${DESTDIR}$(prefix)/lib${LIB_SUFFIX}/
+ 	$(INSTALL) -s --strip-program=${CROSS_COMPILE}${STRIP} libmosquittopp.so.${SOVERSION} ${DESTDIR}${prefix}/lib${LIB_SUFFIX}/libmosquittopp.so.${SOVERSION}
++#	ln -sf libmosquittopp.so.${SOVERSION} ${DESTDIR}${prefix}/lib${LIB_SUFFIX}/libmosquittopp.so
+-	ln -sf libmosquittopp.so.${SOVERSION} ${DESTDIR}${prefix}/lib${LIB_SUFFIX}/libmosquittopp.so
+ 	$(INSTALL) -d ${DESTDIR}${prefix}/include/
+ 	$(INSTALL) mosquittopp.h ${DESTDIR}${prefix}/include/mosquittopp.h
++
+-	
+ uninstall :
+ 	-rm -f ${DESTDIR}${prefix}/lib${LIB_SUFFIX}/libmosquittopp.so.${SOVERSION}
+ 	-rm -f ${DESTDIR}${prefix}/lib${LIB_SUFFIX}/libmosquittopp.so

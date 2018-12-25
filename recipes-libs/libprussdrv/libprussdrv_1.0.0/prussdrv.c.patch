@@ -1,0 +1,19 @@
+--- a/pru_sw/app_loader/interface/prussdrv.c	2017-04-27 08:10:10.307873509 +0200
++++ a/pru_sw/app_loader/interface/prussdrv.c	2017-10-29 21:06:09.430317665 +0100
+@@ -262,6 +262,16 @@
+     }
+ }
+ 
++int prussdrv_close(unsigned int host_interrupt)
++{
++    char name[PRUSS_UIO_PRAM_PATH_LEN];
++    if (prussdrv.fd[host_interrupt]) {
++      close(prussdrv.fd[host_interrupt]);
++    } else {
++       return -1;
++    }
++}
++
+ int prussdrv_version() {
+     return prussdrv.version;
+ }

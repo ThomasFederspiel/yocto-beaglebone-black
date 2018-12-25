@@ -1,0 +1,64 @@
+From ffca77dd8c9e23a6471b14a50b6adf767f61b11f Mon Sep 17 00:00:00 2001
+From: Thomas Federspiel <thomas@federspiel.se>
+Date: Wed, 19 Dec 2018 16:02:44 +0100
+Subject: [PATCH] Better fault handling
+
+---
+ pru_sw/app_loader/interface/prussdrv.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/pru_sw/app_loader/interface/prussdrv.c b/pru_sw/app_loader/interface/prussdrv.c
+index a4defab..7bb5a39 100644
+--- a/pru_sw/app_loader/interface/prussdrv.c
++++ b/pru_sw/app_loader/interface/prussdrv.c
+@@ -140,6 +140,7 @@ int __prussdrv_memmap_init(void)
+         break;
+     default:
+         DEBUG_PRINTF(PRUSS_UNKNOWN_STR "\n");
++	return -1;
+     }
+ 
+     prussdrv.pru1_dataram_base =
+@@ -255,13 +256,38 @@ int prussdrv_open(unsigned int host_interrupt)
+     if (!prussdrv.fd[host_interrupt]) {
+         sprintf(name, "/dev/uio%d", host_interrupt);
+         prussdrv.fd[host_interrupt] = open(name, O_RDWR | O_SYNC);
+-        return __prussdrv_memmap_init();
++
++	if (prussdrv.fd[host_interrupt] >= 0)
++	{
++	  if (prussdrv.mmap_fd == 0)
++	  {
++	    return __prussdrv_memmap_init();
++	  }
++	  else
++	  {
++	    return 0;
++	  }
++	}
++	else
++	{
++	  return -1;
++	}
+     } else {
+         return -1;
+ 
+     }
+ }
+ 
++int prussdrv_close(unsigned int host_interrupt)
++{
++    char name[PRUSS_UIO_PRAM_PATH_LEN];
++    if (prussdrv.fd[host_interrupt]) {
++      close(prussdrv.fd[host_interrupt]);
++    } else {
++       return -1;
++    }
++}
++
+ int prussdrv_version() {
+     return prussdrv.version;
+ }
+-- 
+2.7.4
+

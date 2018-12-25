@@ -1,0 +1,5 @@
+FILESEXTRAPATHS_prepend := "${@bb.utils.contains('WLAN0_MODE', 'ap', '${THISDIR}/init-ifupdown-ap:', '', d)}"
+FILESEXTRAPATHS_prepend := "${@bb.utils.contains('WLAN0_MODE', 'static', '${THISDIR}/init-ifupdown-static:', '', d)}"
+FILESEXTRAPATHS_prepend := "${@bb.utils.contains('WLAN0_MODE', 'dynamic', '${THISDIR}/init-ifupdown-dynamic:', '', d)}"
+#FILESEXTRAPATHS_prepend := "${THISDIR}/init-ifupdown:"
+#FILESEXTRAPATHS_prepend := "${THISDIR}/init-ifupdown-ap:"

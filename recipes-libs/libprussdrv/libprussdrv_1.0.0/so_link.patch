@@ -1,0 +1,35 @@
+--- a/pru_sw/app_loader/interface/Makefile	2015-12-22 07:29:01.836474982 +0100
++++ a/pru_sw/app_loader/interface/Makefile	2015-12-22 07:29:56.888032357 +0100
+@@ -15,10 +15,17 @@
+ AR.c	  = $(AR) rc
+ LINK.c	  = $(CC) -shared
+ 
++
++SODBGNAME = $(TARGET)d.so
++SORELNAME = $(TARGET).so
++
++SOVERMAJOR = .1
++SOVERMINOR = .0
++
+ DBGTARGET = $(LIBDIR)/$(TARGET)d.a
+ RELTARGET = $(LIBDIR)/$(TARGET).a
+-SODBGTARGET = $(LIBDIR)/$(TARGET)d.so
+-SORELTARGET = $(LIBDIR)/$(TARGET).so
++SODBGTARGET = $(LIBDIR)/$(SODBGNAME)
++SORELTARGET = $(LIBDIR)/$(SORELNAME)
+ 
+ DBGCFLAGS = -g -O0 -D__DEBUG
+ ARM_COMPILE_FLAGS?= -mtune=cortex-a8 -march=armv7-a
+@@ -44,6 +51,12 @@
+ 	install -m 0755 -d $(DESTDIR)$(PREFIX)/include/prussdrv
+ 	install -m 0644 $(LIBDIR)/* $(DESTDIR)$(PREFIX)/lib
+ 	install -m 0644 $(PUBLIC_HDRS) $(DESTDIR)$(PREFIX)/include/prussdrv
++	mv $(DESTDIR)${PREFIX}/lib/$(SORELNAME) $(DESTDIR)${PREFIX}/lib/$(SORELNAME)$(SOVERMAJOR)$(SOVERMINOR) 
++	ln -sf $(SORELNAME)$(SOVERMAJOR)$(SOVERMINOR) $(DESTDIR)${PREFIX}/lib/$(SORELNAME)$(SOVERMAJOR) 
++	ln -sf $(SORELNAME)$(SOVERMAJOR) $(DESTDIR)${PREFIX}/lib/$(SORELNAME) 
++	mv $(DESTDIR)${PREFIX}/lib/$(SODBGNAME) $(DESTDIR)${PREFIX}/lib/$(SODBGNAME)$(SOVERMAJOR)$(SOVERMINOR) 
++	ln -sf $(SODBGNAME)$(SOVERMAJOR)$(SOVERMINOR) $(DESTDIR)${PREFIX}/lib/$(SODBGNAME)$(SOVERMAJOR) 
++	ln -sf $(SODBGNAME)$(SOVERMAJOR) $(DESTDIR)${PREFIX}/lib/$(SODBGNAME) 
+ 
+ release:	$(RELTARGET)
+ 
