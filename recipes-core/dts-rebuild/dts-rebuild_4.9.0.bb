@@ -4,12 +4,13 @@ SECTION = "devel"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-DEPENDS += "dtc-native"
+DEPENDS += "dtc-native linux-custom-rt"
 
 PR = "r0"
 PV = "4.9.0"
 
-DTS_KERNEL_DEVICETREE = "${KERNEL_DEVICETREE} am335x-boneblack-uboot.dtb"
+DTS_KERNEL_DEVICETREE = "${KERNEL_DEVICETREE} am335x-boneblack-emmc-overlay.dtb am335x-boneblack-hdmi-overlay.dtb \
+			 am335x-boneblack-nhdmi-overlay.dtb am335x-boneblack-overlay.dtb am335x-boneblack-wireless-emmc-overlay.dtb"
 
 COMPATIBLE_MACHINE="beaglebone"
 

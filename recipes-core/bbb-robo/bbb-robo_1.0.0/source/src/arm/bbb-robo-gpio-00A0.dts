@@ -7,75 +7,73 @@
 
 /{
     compatible = "ti,beaglebone", "ti,beaglebone-black";
-    part_number = "BS_PINMODE_GPIO_0x35";
+    part-number = "bbb-robo-gpio";
+    version = "00A0";
 
-    // P9.14, ehrpwm1a - AIN1 
-    // P9.16, ehrpwm1b - AIN2
-    // P9.29, ehrpwm0b - BIN2
-    // P9.31, ehrpwm0a - BIN1
-    // P9.41, pr1_pru0_pru_r3x_6 - nSleep
-    // P9.42, pr1_pru0_pru_r3x_4 - nFault
+    // P9.14, ehrpwm1a - AIN1 - Out
+    // P9.16, ehrpwm1b - AIN2 - Out
+    // P9.29, ehrpwm0b - BIN2 - Out
+    // P9.31, ehrpwm0a - BIN1 - Out
+    // P9.41, pr1_pru0_pru_r3x_6 - nSleep - Out
+    // P9.42, pr1_pru0_pru_r3x_4 - nFault - In
     
-    // P8.19, ehrpwm2a - SPK
+    // P8.19, ehrpwm2a - SPK - Out
     
-    // P8.33, eQEP1B - L-ENC_B
-    // P8.35, eQEP1A - L-ENC_A
-    // P8.11, eQEP2B - R-ENC_B
-    // P8.41, eQEP2A - R-ENC_A
+    // P8.33, eQEP1B - L-ENC_B - In
+    // P8.35, eQEP1A - L-ENC_A - In
+    // P8.11, eQEP2B - R-ENC_B - In
+    // P8.12, eQEP2A - R-ENC_A - In
     
-    // P9.17, SPI0_CS0
-    // P9.18, SPI0_DI
-    // P9.21, SPI0_DO
-    // P9.22, SPI0_CLK
-    // P8.28, pr1_pru1_pru_r3x_10 - INT1
-    // P8.30, pr1_pru1_pru_r3x_11 - INT2
+    // P9.17, SPI0_CS0 - In
+    // P9.18, SPI0_DI - In
+    // P9.21, SPI0_DO - Out
+    // P9.22, SPI0_CLK - In
+    // P8.28, pr1_pru1_pru_r3x_10 - INT1 - In
+    // P8.30, pr1_pru1_pru_r3x_11 - INT2 - In
     
-    // P8.12, pr1_pru1_pru_r3x_12 - LED 1
-    // P8.27, pr1_pru1_pru_r3x_8 - LED 2
-    // P8.29, pr1_pru1_pru_r3x_9 - LED 3
+    // P8.27, pr1_pru1_pru_r3x_8 - LED 2 - Out
+    // P8.29, pr1_pru1_pru_r3x_9 - LED 3 - Out
     
     exclusive-use =
         "P9.14",
-        "P9.16",
-        "P9.29",
-        "P9.31",
-        "P9.41",
-        "P9.42",
-        "P8.19",
-        "P8.33",
-        "P8.35",
-        "P8.11",
-        "P8.41",
-        "P9.17",
-        "P9.18",
-        "P9.21",
-        "P9.22",
-        "P8.28",
-        "P8.30",
-        "P8.12",
-        "P8.27",
-        "P8.29",
         "gpio1_18",
+        "P9.16",
         "gpio1_19",
+        "P9.29",
         "gpio3_15",
+        "P9.31",
         "gpio3_14",
+        "P9.41",
         "gpio0_20",
         "gpio3_20",
+        "P9.42",
         "gpio0_7",
         "gpio3_18",
+        "P8.19",
         "gpio0_22",
+        "P8.33",
         "gpio0_9",
+        "P8.35",
         "gpio0_8",
+        "P8.11",
         "gpio1_13",
-        "gpio2_10",
-        "gpio0_5",
-        "gpio0_4",
-        "gpio0_3",
-        "gpio0_2",
-        "gpio2_24",
-        "gpio2_25",
+        "P8.12",
         "gpio1_12",
+        "P9.17",
+        "gpio0_5",
+        "P9.18",
+        "gpio0_4",
+        "P9.21",
+        "gpio0_3",
+        "P9.22",
+        "gpio0_2",
+        "P8.28",
+        "gpio2_24",
+        "P8.30",
+        "gpio2_25",
+        "P8.27",
         "gpio2_22",
+        "P8.29",
         "gpio2_23";
         
     fragment@0 {
@@ -108,17 +106,17 @@
             bs_pinmode_P8_19_0x14: pinmux_bs_pinmode_P8_19_0x14 {
                 pinctrl-single,pins = <0x020 0x14>;
             };
-            bs_pinmode_P8_33_0x32: pinmux_bs_pinmode_P8_33_0x12 {
+            bs_pinmode_P8_33_0x32: pinmux_bs_pinmode_P8_33_0x32 {
                 pinctrl-single,pins = <0x0d4 0x32>;
             };
-            bs_pinmode_P8_35_0x32: pinmux_bs_pinmode_P8_35_0x12 {
+            bs_pinmode_P8_35_0x32: pinmux_bs_pinmode_P8_35_0x32 {
                 pinctrl-single,pins = <0x0d0 0x32>;
             };
             bs_pinmode_P8_11_0x34: pinmux_bs_pinmode_P8_11_0x34 {
                 pinctrl-single,pins = <0x034 0x34>;
             };
-            bs_pinmode_P8_41_0x33: pinmux_bs_pinmode_P8_41_0x33 {
-                pinctrl-single,pins = <0x0b0 0x33>;
+            bs_pinmode_P8_12_0x34: pinmux_bs_pinmode_P8_12_0x34 {
+                pinctrl-single,pins = <0x030 0x34>;
             };
             bs_pinmode_P9_17_0x30: pinmux_bs_pinmode_P9_17_0x30 {
                 pinctrl-single,pins = <0x15c 0x30>;
@@ -132,23 +130,17 @@
             bs_pinmode_P9_22_0x30: pinmux_bs_pinmode_P9_22_0x30 {
                 pinctrl-single,pins = <0x150 0x30>;
             }; 
-            bs_pinmode_P8_28_0x16: pinmux_bs_pinmode_P8_28_0x16 {
-                pinctrl-single,pins = <0x0e8 0x16>;
+            bs_pinmode_P8_28_0x36: pinmux_bs_pinmode_P8_28_0x36 {
+                pinctrl-single,pins = <0x0e8 0x36>;
             };
-            bs_pinmode_P8_30_0x16: pinmux_bs_pinmode_P8_30_0x16 {
-                pinctrl-single,pins = <0x0ec 0x16>;
+            bs_pinmode_P8_30_0x36: pinmux_bs_pinmode_P8_30_0x36 {
+                pinctrl-single,pins = <0x0ec 0x36>;
             };
-/*            bs_pinmode_P8_12_0x36: pinmux_bs_pinmode_P8_12_0x36 {
-                pinctrl-single,pins = <0x030 0x36>;
-            }; */
-            bs_pinmode_P8_12_0x34: pinmux_bs_pinmode_P8_12_0x34 {
-                pinctrl-single,pins = <0x030 0x34>;
+            bs_pinmode_P8_27_0x15: pinmux_bs_pinmode_P8_27_0x15 {
+                pinctrl-single,pins = <0x0e0 0x15>;
             };
-            bs_pinmode_P8_27_0x35: pinmux_bs_pinmode_P8_27_0x35 {
-                pinctrl-single,pins = <0x0e0 0x35>;
-            };
-            bs_pinmode_P8_29_0x35: pinmux_bs_pinmode_P8_29_0x35 {
-                pinctrl-single,pins = <0x0e4 0x35>;
+            bs_pinmode_P8_29_0x15: pinmux_bs_pinmode_P8_29_0x15 {
+                pinctrl-single,pins = <0x0e4 0x15>;
             };
         };
     };
@@ -228,11 +220,11 @@
                 pinctrl-names = "default";
                 pinctrl-0 = <&bs_pinmode_P8_11_0x34>;
             };
-            bs_pinmode_P8_41_0x33_pinmux {
+            bs_pinmode_P8_12_0x34_pinmux {
                 compatible = "bone-pinmux-helper";
                 status = "okay";
                 pinctrl-names = "default";
-                pinctrl-0 = <&bs_pinmode_P8_41_0x33>;
+                pinctrl-0 = <&bs_pinmode_P8_12_0x34>;
             };
             bs_pinmode_P9_17_0x30_pinmux {
                 compatible = "bone-pinmux-helper";
@@ -258,42 +250,53 @@
                 pinctrl-names = "default";
                 pinctrl-0 = <&bs_pinmode_P9_22_0x30>;
             };
-            bs_pinmode_P8_28_0x16_pinmux {
+            bs_pinmode_P8_28_0x36_pinmux {
                 compatible = "bone-pinmux-helper";
                 status = "okay";
                 pinctrl-names = "default";
-                pinctrl-0 = <&bs_pinmode_P8_28_0x16>;
+                pinctrl-0 = <&bs_pinmode_P8_28_0x36>;
             };
-            bs_pinmode_P8_30_0x16_pinmux {
+            bs_pinmode_P8_30_0x36_pinmux {
                 compatible = "bone-pinmux-helper";
                 status = "okay";
                 pinctrl-names = "default";
-                pinctrl-0 = <&bs_pinmode_P8_30_0x16>;
+                pinctrl-0 = <&bs_pinmode_P8_30_0x36>;
             };
-/*            bs_pinmode_P8_12_0x36_pinmux {
+            bs_pinmode_P8_27_0x15_pinmux {
                 compatible = "bone-pinmux-helper";
                 status = "okay";
                 pinctrl-names = "default";
-                pinctrl-0 = <&bs_pinmode_P8_12_0x36>;
-            }; */
-            bs_pinmode_P8_12_0x34_pinmux {
-                compatible = "bone-pinmux-helper";
-                status = "okay";
-                pinctrl-names = "default";
-                pinctrl-0 = <&bs_pinmode_P8_12_0x34>;
+                pinctrl-0 = <&bs_pinmode_P8_27_0x15>;
             };
-            bs_pinmode_P8_27_0x35_pinmux {
+            bs_pinmode_P8_29_0x15_pinmux {
                 compatible = "bone-pinmux-helper";
                 status = "okay";
                 pinctrl-names = "default";
-                pinctrl-0 = <&bs_pinmode_P8_27_0x35>;
-            };
-            bs_pinmode_P8_29_0x35_pinmux {
-                compatible = "bone-pinmux-helper";
-                status = "okay";
-                pinctrl-names = "default";
-                pinctrl-0 = <&bs_pinmode_P8_29_0x35>;
+                pinctrl-0 = <&bs_pinmode_P8_29_0x15>;
             };
         };
+    };
+
+    // Kernel as default disables PWM clocks by clearing clock bits. This hack causes kernel to start PWM clocks instead
+    // as it has been specified that set of bit causes disable of clocks (causes not start of clocks)
+    fragment@2 {
+        target = <&ehrpwm0_tbclk>;
+        __overlay__ {
+		ti,set-bit-to-disable;
+    	};
+    };
+
+    fragment@3 {
+        target = <&ehrpwm1_tbclk>;
+        __overlay__ {
+		ti,set-bit-to-disable;
+    	};
+    };
+
+    fragment@4 {
+        target = <&ehrpwm2_tbclk>;
+        __overlay__ {
+		ti,set-bit-to-disable;
+    	};
     };
 };
