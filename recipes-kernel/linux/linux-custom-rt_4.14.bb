@@ -85,11 +85,17 @@ FILESEXTRAPATHS_prepend := "${FILESDIR}:"
 SRCREV_beaglebone="43dc4909c72684edb3f260041cd458aa7c1efd5e"
 
 PR = "r1"
+RT_PR = "rt1"
 PV = "${LINUX_VERSION}${LINUX_SUBLEVEL}"
 
 # Override COMPATIBLE_MACHINE to include your machine in a bbappend
 # file. Leaving it empty here ensures an early explicit build failure.
 COMPATIBLE_MACHINE = "beaglebone"
+
+# fix for lttng-modules, which needs to be patched
+do_shared_workdir_append() {
+        echo "-${RT_PR}" > ${STAGING_KERNEL_BUILDDIR}/lttng-localversion-rt
+}
 
 kernel_do_install_append() {
 	ln -sf zImage-${KERNEL_VERSION} ${D}/${KERNEL_IMAGEDEST}/vmlinuz-${KERNEL_VERSION}

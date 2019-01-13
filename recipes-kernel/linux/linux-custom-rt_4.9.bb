@@ -59,6 +59,8 @@ PACKAGES += " ${KERNEL_PACKAGE_NAME}-version-devicetree ${KERNEL_PACKAGE_NAME}-i
 SRC_URI = "git://github.com/beagleboard/linux.git;protocol=https;nocheckout=1;branch=4.9-rt;name=beaglebone \
            file://defconfig \
            file://spidev.patch;apply=yes \
+           file://0001-Added-IIO-driver-for-ST-lsm6ds3-33.patch;apply=yes \
+	   file://0001-Added-IIO-types.patch;apply=yes \
 	   "
 
 LINUX_VERSION ?= "4.9"
@@ -67,8 +69,6 @@ LINUX_VERSION_EXTENSION ?= "-custom-rt"
  			
 # 
 FILESDIR := "${THISDIR}/${PN}_${LINUX_VERSION}"
-
-#FILESDIR := "${THISDIR}/${PN}_${LINUX_VERSION}${LINUX_SUBLEVEL}:"
 
 #
 FILES_${KERNEL_PACKAGE_NAME}-version-devicetree += "/${KERNEL_IMAGEDEST}/dtbs/${KERNEL_VERSION}/*"
@@ -83,11 +83,17 @@ FILESEXTRAPATHS_prepend := "${FILESDIR}:"
 SRCREV_beaglebone="4574c16e7e04b5ece647e760fc94bb5fc42b43e9"
 
 PR = "r1"
+RT_PR = "rt1"
 PV = "${LINUX_VERSION}${LINUX_SUBLEVEL}"
 
 # Override COMPATIBLE_MACHINE to include your machine in a bbappend
 # file. Leaving it empty here ensures an early explicit build failure.
 COMPATIBLE_MACHINE = "beaglebone"
+
+# fix for lttng-modules, which needs to be patched
+do_shared_workdir_append() {
+        echo "-${RT_PR}" > ${STAGING_KERNEL_BUILDDIR}/lttng-localversion-rt
+}
 
 kernel_do_install_append() {
 	ln -sf zImage-${KERNEL_VERSION} ${D}/${KERNEL_IMAGEDEST}/vmlinuz-${KERNEL_VERSION}

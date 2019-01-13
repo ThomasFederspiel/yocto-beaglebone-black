@@ -118,7 +118,7 @@
             bs_pinmode_P8_12_0x34: pinmux_bs_pinmode_P8_12_0x34 {
                 pinctrl-single,pins = <0x030 0x34>;
             };
-            bs_pinmode_P9_17_0x30: pinmux_bs_pinmode_P9_17_0x30 {
+/*            bs_pinmode_P9_17_0x30: pinmux_bs_pinmode_P9_17_0x30 {
                 pinctrl-single,pins = <0x15c 0x30>;
             };
             bs_pinmode_P9_18_0x30: pinmux_bs_pinmode_P9_18_0x30 {
@@ -129,7 +129,7 @@
             };
             bs_pinmode_P9_22_0x30: pinmux_bs_pinmode_P9_22_0x30 {
                 pinctrl-single,pins = <0x150 0x30>;
-            }; 
+            }; */
             bs_pinmode_P8_28_0x36: pinmux_bs_pinmode_P8_28_0x36 {
                 pinctrl-single,pins = <0x0e8 0x36>;
             };
@@ -141,6 +141,14 @@
             };
             bs_pinmode_P8_29_0x15: pinmux_bs_pinmode_P8_29_0x15 {
                 pinctrl-single,pins = <0x0e4 0x15>;
+            };
+            spi0_pins_s0: spi0_pins_s0 {
+                pinctrl-single,pins = <
+                  0x150 0x30  /* spi0_sclk, INPUT_PULLUP | MODE0 */
+                  0x154 0x30  /* spi0_d0, INPUT_PULLUP | MODE0 */
+                  0x158 0x10  /* spi0_d1, OUTPUT_PULLUP | MODE0 */
+                  0x15c 0x10  /* spi0_cs0, OUTPUT_PULLUP | MODE0 */
+                >;
             };
         };
     };
@@ -226,7 +234,7 @@
                 pinctrl-names = "default";
                 pinctrl-0 = <&bs_pinmode_P8_12_0x34>;
             };
-            bs_pinmode_P9_17_0x30_pinmux {
+/*            bs_pinmode_P9_17_0x30_pinmux {
                 compatible = "bone-pinmux-helper";
                 status = "okay";
                 pinctrl-names = "default";
@@ -249,7 +257,7 @@
                 status = "okay";
                 pinctrl-names = "default";
                 pinctrl-0 = <&bs_pinmode_P9_22_0x30>;
-            };
+            }; */
             bs_pinmode_P8_28_0x36_pinmux {
                 compatible = "bone-pinmux-helper";
                 status = "okay";
@@ -277,23 +285,57 @@
         };
     };
 
+    fragment@2 {
+	target = <&spi0>;
+	__overlay__ {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		status = "okay";
+		pinctrl-names = "default";
+		pinctrl-0 = <&spi0_pins_s0>;
+		ti,pio-mode; /* disable dma when used as an overlay, dma gets stuck at 160 bits... */
+
+		channel@0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			compatible = "spidev";
+
+			reg = <0>;
+			spi-max-frequency = <16000000>;
+			spi-cpha;
+		};
+
+		channel@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			compatible = "spidev";
+
+			reg = <1>;
+			spi-max-frequency = <16000000>;
+		};
+ 	  };
+    };
+
     // Kernel as default disables PWM clocks by clearing clock bits. This hack causes kernel to start PWM clocks instead
     // as it has been specified that set of bit causes disable of clocks (causes not start of clocks)
-    fragment@2 {
+    fragment@3 {
         target = <&ehrpwm0_tbclk>;
         __overlay__ {
 		ti,set-bit-to-disable;
     	};
     };
 
-    fragment@3 {
+    fragment@4 {
         target = <&ehrpwm1_tbclk>;
         __overlay__ {
 		ti,set-bit-to-disable;
     	};
     };
 
-    fragment@4 {
+    fragment@5 {
         target = <&ehrpwm2_tbclk>;
         __overlay__ {
 		ti,set-bit-to-disable;

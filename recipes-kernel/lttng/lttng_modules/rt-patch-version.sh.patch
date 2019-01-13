@@ -1,0 +1,18 @@
+--- a/rt-patch-version.sh	2019-01-12 14:31:10.930975443 +0100
++++ a/rt-patch-version.sh	2019-01-12 14:30:44.882646050 +0100
+@@ -5,11 +5,11 @@
+ 
+ VERSIONFILE=""
+ 
+-if [ -f "${KPATH}/localversion-rt" ]; then
+-	VERSIONFILE="${KPATH}/localversion-rt"
++if [ -f "${KPATH}/lttng-localversion-rt" ]; then
++	VERSIONFILE="${KPATH}/lttng-localversion-rt"
+ 
+-elif [ -f "${KPATH}/source/localversion-rt" ]; then
+-	VERSIONFILE="${KPATH}/source/localversion-rt"
++elif [ -f "${KPATH}/source/lttng-localversion-rt" ]; then
++	VERSIONFILE="${KPATH}/source/lttng-localversion-rt"
+ else
+ 	echo 0
+ 	exit 0
